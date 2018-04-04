@@ -157,13 +157,13 @@ rule cat_intervar:
             with open('InterVar_chunks/' + CHUNKS[0] + '.InterVarOutput.hg19_multianno.txt.intervar') as f:
                 for line in f:
                     out.write(line)
-        for chunk in CHUNKS[1:]:
-            with open('InterVar_chunks/' + chunk + '.InterVarOutput.hg19_multianno.txt.intervar') as f:
-                head = f.readline()
-                line = f.readline()
-                while line != '':
-                    out.write(line)
+            for chunk in CHUNKS[1:]:
+                with open('InterVar_chunks/' + chunk + '.InterVarOutput.hg19_multianno.txt.intervar') as f:
+                    head = f.readline()
                     line = f.readline()
+                    while line != '':
+                        out.write(line)
+                        line = f.readline()
 
 rule bgzip_bed:
     input:
