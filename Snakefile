@@ -91,6 +91,7 @@ rule subset_vcf:
                 newAlt = '_'.join(alt.split(','))
                 newId = '_'.join([chrom, pos, ref, newAlt])
                 line_list[7] = newId
+                line_list[8] = 'GT'
                 genotypes = line_list[9:]
                 keepGenos = []
                 for geno in genotypes:
