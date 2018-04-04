@@ -46,6 +46,22 @@ for chrom in CHROMOSOMES:
 
 
 
+
+def makeVcfToAvDict(avinput):
+    vcfToAvDict = {}
+    with open(avinput) as f:
+        for line in f:
+            line_list = line.split()
+            avId = '_'.join(line_list[:5])
+            vcfAlt = line_list[9]
+            vcfId = line_list[-1]
+            if not vcfToAvDict.get(vcfId):
+                vcfToAvDict[vcfId] = {}
+            vcfToAvDict[vcfId][vcfAlt] = avId
+    return vcfToAvDict
+
+
+
 rule all:
     input:
         'InterVar_bed/build.intervar.bed.gz.tbi'
