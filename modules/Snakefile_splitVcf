@@ -11,42 +11,9 @@ rule subset_vcf:
         with open(output[0], 'w') as out:
             for line in vcf.header:
                 a = line.decode("utf-8")
-                if not a.startswith('#CHROM'):
-                    out.write(a + '\n')
-            head_list = a.split()
-            out.write('\t'.join(head_list[:9]))
-            firstColumns = []
-            all_genotypes = []
-            maxGenos = 0
+                out.write(a + '\n')
             for line in vcf.fetch(chrom, int(start), int(end)):
-                line_list = line.split()
-                (chrom, pos, snp, ref, alt) = line_list[:5]
-                newAlt = '_'.join(alt.split(','))
-                newId = '_'.join([chrom, pos, ref, newAlt])
-                line_list[7] = newId
-                line_list[8] = 'GT'
-                genotypes = line_list[9:]
-                keepGenos = []
-                for geno in genotypes:
-                    keepGenos.append(geno.split(':')[0])
-                if len(set(keepGenos)) > maxGenos:
-                    maxGenos = len(set(keepGenos))
-                firstColumns.append(line_list[:9])
-                all_genotypes.append(set(keepGenos))
-            c = 1
-            for i in range(maxGenos):
-                out.write('\tSamp' + str(c))
-                c += 1
-            out.write('\n')
-            for i in range(len(firstColumns)):
-                colList = firstColumns[i]
-                out.write('\t'.join(colList))
-                myGenos = list(all_genotypes[i])
-                while len(myGenos) < maxGenos:
-                    myGenos = myGenos + myGenos
-                for j in range(maxGenos):
-                    out.write('\t' + myGenos[j])
-                out.write('\n')
+                out.write(line)
         vcf.close()
 
 
@@ -54,5 +21,38 @@ rule split_multiallelic:
     input:
         'vcf_chunks/{chunk}.vcf'
     output:
-        'split_multiallelic/{chunk}.vcf'
+        'split_multiallelic_vcf_chunks/{chunk}.vcf'
+    params:
+        module = 'module load vcflib/v1.0.0-rc0-279-gc71853a;module load python/2.7'
+    shell:
+        '{params.module};vcfbreakmulti {input} | python scripts/MinimalRepVcf.py - {output}'
+
+rule sort_min_rep_vcf:
+    input:
+        'split_multiallelic_vcf_chunks/{chunk}.vcf'
+    output:
+        'sorted_min_rep_vcf_chunks/{chunk}.vcf'
+    params:
+        module = 'module load igvtools/2.3.98'
+    shell:
+        '{params.module};igvtools sort {input} {output}'
+
+
+rule rename_info:
+    input:
+        'sorted_min_rep_vcf_chunks/{chunk}.vcf'
+    output:
+        'info_renamed_vcf_chunks/{chunk}.vcf'
+    run:
+        with open(input[0]) as f, open(output[0], 'w') as out:
+            for line in f:
+                if line[0] == '#':
+                    out.write(line)
+                else:
+                    line_list = line.split()
+                    (chrom, pos, snp, ref, alt) = line_list[:5]
+                    newId = '_'.join([chrom, pos, ref, alt])
+                    line_list[7] = newId
+                    out.write('\t'.join(line_list) + '\n')
+
 
