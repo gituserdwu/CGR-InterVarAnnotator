@@ -13,7 +13,7 @@ rule subset_vcf:
                 a = line.decode("utf-8")
                 out.write(a + '\n')
             for line in vcf.fetch(chrom, int(start), int(end)):
-                out.write(line)
+                out.write(line + '\n')
         vcf.close()
 
 
