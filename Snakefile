@@ -64,55 +64,8 @@ def makeVcfToAvDict(avinput):
 
 include: 'modules/Snakefile_splitVcf'
 include: 'modules/Snakefile_avinput'
+include: 'modules/Snakefile_InterVar'
 
 rule all:
     input:
         'InterVar_bed/build.intervar.bed.gz.tbi'
-
-
-rule run_intervar:
-    input:
-        'avinput/{chunk}.avinput'
-    output:
-        'InterVar_chunks/{chunk}.InterVarOutput.hg19_multianno.txt.intervar'
-    params:
-        'InterVar_chunks/{chunk}.InterVarOutput'
-    shell:
-        'module load python/2.7;InterVar -i {input} -d $ANNOVAR_DATA/hg19 -o {params}'
-
-
-rule cat_intervar:
-    input:
-        expand('InterVar_chunks/{chunk}.InterVarOutput.hg19_multianno.txt.intervar', chunk = CHUNKS)
-    output:
-        'InterVar_bed/build.intervar.bed'
-    run:
-        with open(output[0], 'w') as out:
-            with open('InterVar_chunks/' + CHUNKS[0] + '.InterVarOutput.hg19_multianno.txt.intervar') as f:
-                for line in f:
-                    out.write(line)
-            for chunk in CHUNKS[1:]:
-                with open('InterVar_chunks/' + chunk + '.InterVarOutput.hg19_multianno.txt.intervar') as f:
-                    head = f.readline()
-                    line = f.readline()
-                    while line != '':
-                        out.write(line)
-                        line = f.readline()
-
-rule bgzip_bed:
-    input:
-        'InterVar_bed/build.intervar.bed'
-    output:
-        'InterVar_bed/build.intervar.bed.gz'
-    shell:
-        'bgzip {input}'
-
-
-rule tabix_bed:
-    input:
-        'InterVar_bed/build.intervar.bed.gz'
-    output:
-        'InterVar_bed/build.intervar.bed.gz.tbi'
-    shell:
-        'tabix -p bed -S 1 {input}'
-
