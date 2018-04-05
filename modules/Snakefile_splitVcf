@@ -50,3 +50,9 @@ rule subset_vcf:
         vcf.close()
 
 
+rule split_multiallelic:
+    input:
+        'vcf_chunks/{chunk}.vcf'
+    output:
+        'split_multiallelic/{chunk}.vcf'
+
