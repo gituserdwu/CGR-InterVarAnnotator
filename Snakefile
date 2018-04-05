@@ -57,8 +57,24 @@ def makeVcfToAvDict(avinput):
             vcfToAvDict[vcfId] = avId
     return vcfToAvDict
 
-
-
+def makeIntervarDict(intervarFile):
+    interVarDict = {}
+    with open(intervarFile) as f:
+        head = f.readline()
+        line = f.readline()
+        while line != '':
+            line_list = line.rstrip().split('\t')
+            (chrom, start, end, ref, alt) = line_list[:5]
+            if chrom not in CHROMOSOMES and 'chr' + chrom in CHROMOSOMES:
+                chrom = 'chr' + chrom
+            avId = '_'.join([chrom, start, end, ref, alt])
+            gene = line_list[5]
+            prediction = '_'.join(line_list[13].split('PVS1=')[0].split()[1:])
+            if not interVarDict.get(avId):
+                interVarDict[avId] = {}
+            interVarDict[avId][gene] = prediction
+            line = f.readline()
+    return interVarDict
 
 
 

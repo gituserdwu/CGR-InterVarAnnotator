@@ -7,6 +7,8 @@ rule subset_vcf:
         'vcf_chunks/{chunk}.vcf'
     run:
         (chrom, start, end) = wildcards.chunk.split('.')
+        if chrom not in CHROMOSOMES and chrom.strip('chr') in CHROMOSOMES:
+            chrom = chrom.strip('chr')
         vcf = pysam.TabixFile(input[0])
         with open(output[0], 'w') as out:
             for line in vcf.header:
