@@ -82,6 +82,7 @@ def makeIntervarDict(intervarFile):
 include: 'modules/Snakefile_splitVcf'
 include: 'modules/Snakefile_avinput'
 include: 'modules/Snakefile_InterVar'
+include: 'modules/Snakefile_annotate'
 
 rule all:
     input:
