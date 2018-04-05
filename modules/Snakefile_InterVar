@@ -30,11 +30,11 @@ rule cat_intervar:
         'InterVar_bed/build.intervar.bed'
     run:
         with open(output[0], 'w') as out:
-            with open('InterVar_chunks/' + CHUNKS[0] + '.InterVarOutput.hg19_multianno.txt.intervar') as f:
+            with open('sorted_interVar_chunks/' + CHUNKS[0] + '.bed') as f:
                 for line in f:
                     out.write(line)
             for chunk in CHUNKS[1:]:
-                with open('InterVar_chunks/' + chunk + '.InterVarOutput.hg19_multianno.txt.intervar') as f:
+                with open('sorted_interVar_chunks/' + chunk + '.bed') as f:
                     head = f.readline()
                     line = f.readline()
                     while line != '':
