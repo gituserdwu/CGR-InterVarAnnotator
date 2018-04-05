@@ -63,47 +63,12 @@ def makeVcfToAvDict(avinput):
 
 
 include: 'modules/Snakefile_splitVcf'
-
+include: 'modules/Snakefile_avinput'
 
 rule all:
     input:
         'InterVar_bed/build.intervar.bed.gz.tbi'
 
-
-rule make_avinput:
-    input:
-        'vcf_chunks/{chunk}.vcf'
-    output:
-        'avinput/{chunk}.avinput'
-    run:
-        (chrom, start, end) = wildcards.chunk.split('.')
-        shell('perl /usr/local/apps/ANNOVAR/2017-07-16/convert2annovar.pl --format vcf4 --includeinfo {input} --allsample --outfile {input}.avinput')
-        sampFiles = glob.glob(input[0] + '.avinput.Samp*.avinput')
-        with open(input[0]) as f:
-            line = f.readline()
-            while line[0] == '#':
-                line = f.readline()
-        line_list = line.split()
-        samples = line_list[9:]
-        if len(samples) != len(sampFiles):
-            print('Number of samples in ' + input[0] + ' do not match av sample files')
-            sys.exit(1)
-        lineDict = {}
-        for sampFile in sampFiles:
-            with open(sampFile) as f:
-                for line in f:
-                    line_list = line.split()
-                    (chrom, start, end, ref, alt) = line_list[:5]
-                    pos = int(start)
-                    if not lineDict.get(pos):
-                        lineDict[pos] = []
-                    newLine = '\t'.join(line_list[:-2]) + '\n'
-                    lineDict[pos].append(newLine)
-        with open(output[0], 'w') as out:
-            for pos in sorted(lineDict.keys()):
-                lines = set(lineDict[pos])
-                for line in lines:
-                    out.write(line)
 
 rule run_intervar:
     input:
