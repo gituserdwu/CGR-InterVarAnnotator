@@ -6,9 +6,10 @@ rule run_intervar:
     output:
         'InterVar_chunks/{chunk}.InterVarOutput.hg19_multianno.txt.intervar'
     params:
-        'InterVar_chunks/{chunk}.InterVarOutput'
+        out = 'InterVar_chunks/{chunk}.InterVarOutput',
+        module = 'module load python/2.7;module load InterVar/2.0'
     shell:
-        'module load python/2.7;InterVar -i {input} -d $ANNOVAR_DATA/hg19 -o {params}'
+        '{params.module};InterVar -i {input} -d $ANNOVAR_DATA/hg19 -o {params.out}'
 
 
 rule cat_intervar:
@@ -34,8 +35,10 @@ rule bgzip_bed:
         'InterVar_bed/build.intervar.bed'
     output:
         'InterVar_bed/build.intervar.bed.gz'
+    params:
+        module = 'module load tabix/0.2.6'
     shell:
-        'bgzip {input}'
+        '{params.module};bgzip {input}'
 
 
 rule tabix_bed:
@@ -43,6 +46,8 @@ rule tabix_bed:
         'InterVar_bed/build.intervar.bed.gz'
     output:
         'InterVar_bed/build.intervar.bed.gz.tbi'
+    params:
+        module = 'module load tabix/0.2.6'
     shell:
-        'tabix -p bed -S 1 {input}'
+        '{params.module};tabix -p bed -S 1 {input}'
 
