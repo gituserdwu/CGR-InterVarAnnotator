@@ -12,9 +12,20 @@ rule run_intervar:
         '{params.module};InterVar -i {input} -d $ANNOVAR_DATA/hg19 -o {params.out}'
 
 
+rule sort_intervar:
+    input:
+        'InterVar_chunks/{chunk}.InterVarOutput.hg19_multianno.txt.intervar'
+    output:
+        'sorted_interVar_chunks/{chunk}.bed'
+    params:
+        module = 'module load bedtools/2.27.1'
+    shell:
+        '{params.module}; bedtools sort -header -i {input} > {output}'
+
+
 rule cat_intervar:
     input:
-        expand('InterVar_chunks/{chunk}.InterVarOutput.hg19_multianno.txt.intervar', chunk = CHUNKS)
+        expand('sorted_interVar_chunks/{chunk}.bed', chunk = CHUNKS)
     output:
         'InterVar_bed/build.intervar.bed'
     run:
