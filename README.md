@@ -25,7 +25,7 @@ cd /data/username/desired/output/directory
 sbatch --cpus-per-task=2 --mem=2g --partition=norm --time=24:00:00 mainSnake.sh
 ```
 
-*runtime, etc. for all possible input vcf.gz files has not been tested.  You may need to change the time above or parameters in cluster.json accordingly*
+*runtime, etc. for all possible input vcf.gz files has not been tested.  You may need to change the time above or parameters in cluster.json accordingly. If pipeline fails due to going over time, simply resubmit using the same command.  It will pick up where it left off.*
 
 
 
