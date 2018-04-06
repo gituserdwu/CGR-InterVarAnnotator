@@ -6,7 +6,7 @@
 
 **USAGE:**
 
-*Clone the repo in the directory where you want the output.*
+*Clone the repo in the directory where you want the output. Preferablly a clean directory with nothing else in it.*
 
 **On helix:**
 
