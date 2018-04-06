@@ -22,7 +22,7 @@ rule subset_vcf:
                     newAlt = '_'.join(alt.split(','))
                     newId = '_'.join([chrom, pos, ref, newAlt])
                     line_list[2] = newId
-                out.write(line + '\n')
+                out.write('\t'.join(line_list) + '\n')
         vcf.close()
 
 
