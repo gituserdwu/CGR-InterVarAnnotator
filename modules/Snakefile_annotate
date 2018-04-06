@@ -39,7 +39,7 @@ rule cat_annotated_vcf_chunks:
     input:
         expand('annotated_vcf_chunk/{chunk}.vcf', chunk = CHUNKS)
     output:
-        'InterVar_annotated.vcf'
+        'variants_InterVar_annotated.vcf'
     run:
         with open(output[0], 'w') as out:
             with open('annotated_vcf_chunk/' + CHUNKS[0] + '.vcf') as f:
@@ -57,9 +57,9 @@ rule cat_annotated_vcf_chunks:
 
 rule bgzip_annotated_vcf:
     input:
-        'InterVar_annotated.vcf'
+        'variants_InterVar_annotated.vcf'
     output:
-        'InterVar_annotated.vcf.gz'
+        'variants_InterVar_annotated.vcf.gz'
     params:
         module = 'module load tabix/0.2.6'
     shell:
@@ -67,9 +67,9 @@ rule bgzip_annotated_vcf:
 
 rule tabix_annotated_vcf:
     input:
-        'InterVar_annotated.vcf.gz'
+        'variants_InterVar_annotated.vcf.gz'
     output:
-        'InterVar_annotated.vcf.gz.tbi'
+        'variants_InterVar_annotated.vcf.gz.tbi'
     params:
         module = 'module load tabix/0.2.6'
     shell:
