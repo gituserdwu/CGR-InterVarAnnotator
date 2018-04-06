@@ -51,17 +51,26 @@ rule rename_info:
     input:
         'sorted_min_rep_vcf_chunks/{chunk}.vcf'
     output:
-        'info_renamed_vcf_chunks/{chunk}.vcf'
+        vcf = 'info_renamed_vcf_chunks/{chunk}.vcf',
+        av = 'av_warning_variants/{chunk}.avinput'
     run:
-        with open(input[0]) as f, open(output[0], 'w') as out:
-            for line in f:
-                if line[0] == '#':
-                    out.write(line)
-                else:
-                    line_list = line.split()
-                    (chrom, pos, snp, ref, alt) = line_list[:5]
-                    newId = '_'.join([chrom, pos, ref, alt])
-                    line_list[7] = newId
-                    out.write('\t'.join(line_list) + '\n')
+        with open(input[0]) as f, open(output.vcf, 'w') as out, open(output.av, 'w') as avOut:
+            line = f.readline()
+            while not line.startswith('#CHROM'):
+                out.write(line)
+                line = f.readline()
+            line_list = line.split()
+            out.write('\t'.join(line_list[:8]) + '\n')
+            line = f.readline()
+            while line != '':
+                line_list = line.split()
+                (chrom, pos, snp, ref, alt) = line_list[:5]
+                newId = '_'.join([chrom, pos, ref, alt])
+                line_list[7] = newId
+                out.write('\t'.join(line_list[:8]) + '\n')
+                if alt == '.':
+                    end = str(int(pos) + len(ref) - 1)
+                    avOut.write('\t'.join([chrom, pos, end, ref, '-'] + line_list[:8]) + '\n')
+                line = f.readline()
 
 

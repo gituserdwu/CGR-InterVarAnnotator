@@ -2,10 +2,15 @@
 
 rule make_avinput:
     input:
-        'info_renamed_vcf_chunks/{chunk}.vcf'
+        vcf = 'info_renamed_vcf_chunks/{chunk}.vcf',
+        av = 'av_warning_variants/{chunk}.avinput'
     output:
         'avinput/{chunk}.avinput'
     params:
         script = 'perl /usr/local/apps/ANNOVAR/2017-07-16/convert2annovar.pl'
-    shell:
-        '{params.script} --format vcf4old --includeinfo {input} --outfile {output}'
+    run:
+        shell('{params.script} --format vcf4old --includeinfo {input.vcf} --outfile {output}')
+        with open(input.av) as f, open(output[0], 'a') as out:
+            a = f.read()
+            out.write(a)
+            
