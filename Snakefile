@@ -87,4 +87,4 @@ include: 'modules/Snakefile_annotate'
 rule all:
     input:
         'InterVar_bed/build.intervar.bed.gz.tbi',
-        'InterVar_annotated.vcf.gz.tbi'
+        'variants_InterVar_annotated.vcf.gz.tbi'
