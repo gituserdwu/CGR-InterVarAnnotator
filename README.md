@@ -14,6 +14,7 @@
 cd /data/username/desired/output/directory
 module load git
 git clone https://github.com/ekarlins/InterVarAnnotator.git
+cd InterVarAnnotator
 ```
 
 *Edit "config.yaml" to give the path to your input vcf.gz (at the very least)*
@@ -21,7 +22,7 @@ git clone https://github.com/ekarlins/InterVarAnnotator.git
 **On Biowulf:**
 
 ```sh
-cd /data/username/desired/output/directory
+cd /data/username/desired/output/directory/InterVarAnnotator
 sbatch --cpus-per-task=2 --mem=2g --partition=norm --time=24:00:00 mainSnake.sh
 ```
 
