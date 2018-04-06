@@ -1,0 +1,26 @@
+{
+    "__default__" :
+    {
+        "time" : "01:00:00",
+        "partition" : "quick",
+        "mem"  : "2g",
+	"extra": "",
+        "out"  : "logs/{rule}-%j.out"
+    },
+    "run_intervar" :
+    {
+        "time" : "04:00:00",
+        "partition" : "quick",
+        "mem"  : "10g",
+	"extra": "",
+        "out"  : "logs/{rule}-%j.out"    
+    },
+    "sort_min_rep_vcf" :
+    {
+        "time" : "04:00:00",
+        "partition" : "quick",
+        "mem"  : "6g",
+	"extra": "",
+        "out"  : "logs/{rule}-%j.out"    
+    }
+}
