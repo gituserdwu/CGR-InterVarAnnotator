@@ -1,8 +1,8 @@
 # InterVarAnnotator
 ## Add full InterVar annotation to VCF file
 
-## Note:  This pipeline splits multi-allelic variants to multiple lines and reformats positions and alleles to minimal representations.
-## Therefore the POS, REF, and ALT in the final VCF output will not match the input VCF for every variant.
+### Note:  This pipeline splits multi-allelic variants to multiple lines and reformats positions and alleles to minimal representations.
+Therefore the POS, REF, and ALT in the final VCF output will not match the input VCF for every variant.
 
 
 **USAGE:**
@@ -13,7 +13,7 @@ Clone the repo in the directory where you want the output.
 
 cd /data/username/desired/output/directory
 
-module laod git
+module load git
 
 git clone https://github.com/ekarlins/InterVarAnnotator.git
 
