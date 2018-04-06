@@ -15,6 +15,13 @@ rule subset_vcf:
                 a = line.decode("utf-8")
                 out.write(a + '\n')
             for line in vcf.fetch(chrom, int(start), int(end)):
+                line_list = line.split()
+                snp = line_list[2]
+                if snp == '.':
+                    (chrom, pos, snp, ref, alt) = line_list[:5]
+                    newAlt = '_'.join(alt.split(','))
+                    newId = '_'.join([chrom, pos, ref, newAlt])
+                    line_list[2] = newId
                 out.write(line + '\n')
         vcf.close()
 
