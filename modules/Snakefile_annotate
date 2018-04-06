@@ -31,6 +31,7 @@ rule annotate_vcf_chunk:
                 interVar = 'InterVar=' + '|'.join(predictions)
                 info = line_list[7]
                 line_list[7] = info + ';' + interVar
+                out.write('\t'.join(line_list) + '\n')
                 line = f.readline()
 
 
