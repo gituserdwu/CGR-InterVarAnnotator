@@ -5,25 +5,11 @@ rule subset_vcf:
         vcf
     output:
         'vcf_chunks/{chunk}.vcf'
+    params:
+        module = 'module load python/2.7'
     run:
         (chrom, start, end) = wildcards.chunk.split('.')
-        if chrom not in CHROMOSOMES and chrom.strip('chr') in CHROMOSOMES:
-            chrom = chrom.strip('chr')
-        vcf = pysam.TabixFile(input[0])
-        with open(output[0], 'w') as out:
-            for line in vcf.header:
-                a = line.decode("utf-8")
-                out.write(a + '\n')
-            for line in vcf.fetch(chrom, int(start), int(end)):
-                line_list = line.split()
-                snp = line_list[2]
-                if snp == '.':
-                    (chrom, pos, snp, ref, alt) = line_list[:5]
-                    newAlt = '_'.join(alt.split(','))
-                    newId = '_'.join([chrom, pos, ref, newAlt])
-                    line_list[2] = newId
-                out.write('\t'.join(line_list) + '\n')
-        vcf.close()
+        shell('{params.module};python scripts/subsetVcf.py {input} {output} ' + chrom + ' ' + start + ' ' + end)
 
 
 rule split_multiallelic:
@@ -44,7 +30,7 @@ rule sort_min_rep_vcf:
     params:
         module = 'module load igvtools/2.3.98'
     shell:
-        '{params.module};igvtools sort {input} {output}'
+        '{params.module};igvtools sort -m 100000 {input} {output}'
 
 
 rule rename_info:
