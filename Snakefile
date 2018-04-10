@@ -42,41 +42,6 @@ for chrom in CHROMOSOMES:
         start = str(i)
         end = str(i + chunk_size)
         CHUNKS.append('.'.join([chrom, start, end]))
-    
-
-
-
-
-def makeVcfToAvDict(avinput):
-    vcfToAvDict = {}
-    with open(avinput) as f:
-        for line in f:
-            line_list = line.split()
-            avId = '_'.join(line_list[:5])
-            vcfId = line_list[12]
-            vcfToAvDict[vcfId] = avId
-    return vcfToAvDict
-
-def makeIntervarDict(intervarFile):
-    interVarDict = {}
-    with open(intervarFile) as f:
-        head = f.readline()
-        line = f.readline()
-        while line != '':
-            line_list = line.rstrip().split('\t')
-            (chrom, start, end, ref, alt) = line_list[:5]
-            if chrom not in CHROMOSOMES and 'chr' + chrom in CHROMOSOMES:
-                chrom = 'chr' + chrom
-            avId = '_'.join([chrom, start, end, ref, alt])
-            gene = line_list[5]
-            prediction = '_'.join(line_list[13].split('PVS1=')[0].split()[1:])
-            if not interVarDict.get(avId):
-                interVarDict[avId] = {}
-            interVarDict[avId][gene] = prediction
-            line = f.readline()
-    return interVarDict
-
-
 
 
 include: 'modules/Snakefile_splitVcf'
