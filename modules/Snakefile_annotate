@@ -4,35 +4,14 @@ rule annotate_vcf_chunk:
     input:
         vcf = 'sorted_min_rep_vcf_chunks/{chunk}.vcf',
         av = 'avinput/{chunk}.avinput',
-        intervar = 'InterVar_chunks/{chunk}.InterVarOutput.hg19_multianno.txt.intervar'
+        intervar = 'InterVar_chunks/{chunk}.InterVarOutput.hg19_multianno.txt.intervar',
+        tabVcf = vcf
     output:
         'annotated_vcf_chunk/{chunk}.vcf'
-    run:
-        vcfToAvDict = makeVcfToAvDict(input.av)
-        interVarDict = makeIntervarDict(input.intervar)
-        with open(input.vcf) as f, open(output[0], 'w') as out:
-            line = f.readline()
-            while not line.startswith('#CHROM'):
-                out.write(line)
-                line = f.readline()
-            out.write('##INFO=<ID=InterVar,Number=.,Type=String,Description="InterVar predicted pathogenicity for each overlapping gene">\n')
-            out.write(line)
-            line = f.readline()
-            while line != '':
-                line_list = line.split()
-                (chrom, pos, snp, ref, alt) = line_list[:5]
-                vcfId = '_'.join([chrom, pos, ref, alt])
-                avId = vcfToAvDict[vcfId]
-                geneDict = interVarDict[avId]
-                predictions = []
-                for gene in sorted(geneDict.keys()):
-                    predict = geneDict[gene]
-                    predictions.append(gene + ':' + predict)
-                interVar = 'InterVar=' + '|'.join(predictions)
-                info = line_list[7]
-                line_list[7] = info + ';' + interVar
-                out.write('\t'.join(line_list) + '\n')
-                line = f.readline()
+    params:
+        module = 'module load python/2.7'
+    shell:
+        '{params.module};python scripts/annotateVcf.py {input.vcf} {output} {input.av} {input.intervar} {input.tabVcf}'
 
 
 rule cat_annotated_vcf_chunks:
