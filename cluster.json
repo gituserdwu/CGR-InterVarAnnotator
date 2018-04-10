@@ -67,7 +67,7 @@
     {
         "time" : "04:00:00",
         "partition" : "quick",
-        "mem"  : "6g",
+        "mem"  : "10g",
 	"extra": "",
         "out"  : "logs/{rule}-%j.out"    
     }
