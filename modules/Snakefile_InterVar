@@ -29,17 +29,9 @@ rule cat_intervar:
     output:
         'InterVar_bed/build.intervar.bed'
     run:
-        with open(output[0], 'w') as out:
-            with open('sorted_interVar_chunks/' + CHUNKS[0] + '.bed') as f:
-                for line in f:
-                    out.write(line)
-            for chunk in CHUNKS[1:]:
-                with open('sorted_interVar_chunks/' + chunk + '.bed') as f:
-                    head = f.readline()
-                    line = f.readline()
-                    while line != '':
-                        out.write(line)
-                        line = f.readline()
+        shell('cat ' + input[0] + ' > {output}')
+        for i in input[1:]:
+            shell('tail -n +2 ' + i + ' >> {output}')
 
 rule bgzip_bed:
     input:
