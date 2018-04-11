@@ -27,7 +27,7 @@ rule cat_annotated_vcf_chunks:
             for chunk in CHUNKS[1:]:
                 with open('annotated_vcf_chunk/' + chunk + '.vcf') as f:
                     line = f.readline()
-                    while line[0] == '#':
+                    while line != '' and line[0] == '#':
                         line = f.readline()
                     while line != '':
                         out.write(line)
