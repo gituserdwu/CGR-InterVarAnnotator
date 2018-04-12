@@ -1,7 +1,7 @@
 # InterVarAnnotator
 ## Add full InterVar annotation to VCF file
 
-### Note:  This pipeline splits multi-allelic variants to multiple lines and reformats positions and alleles to minimal representations. Therefore the POS, REF, and ALT in the final VCF output will not match the input VCF for every variant. The ID field of the output file will either match the ID for the input file, or if input ID is "." it will match CHROM_POS_REF_ALT of input file.
+### Note:  This pipeline splits multi-allelic variants to multiple lines and reformats positions and alleles to minimal representations. Therefore the POS, REF, and ALT in the final VCF output will not match the input VCF for every variant. If you need to match these variants to the original VCF there is a field added to the INFO of the output VCF called "OldVcfAlleles", which corresponds to CHROM_POS_REF_ALT of input file.  In addition the InterVar annotation is added to INFO in a field called "InterVar", which contains a "|" seperated list of gene:prediction.
 
 
 **USAGE:**
