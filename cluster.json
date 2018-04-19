@@ -70,5 +70,13 @@
         "mem"  : "10g",
 	"extra": "",
         "out"  : "logs/{rule}-%j.out"    
+    },
+    "left_align_trim" :
+    {
+        "time" : "04:00:00",
+        "partition" : "quick",
+        "mem"  : "5g",
+	"extra": "",
+        "out"  : "logs/{rule}-%j.out"    
     }
 }
