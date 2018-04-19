@@ -18,13 +18,25 @@ rule split_multiallelic:
     output:
         'split_multiallelic_vcf_chunks/{chunk}.vcf'
     params:
-        module = 'module load vcflib/v1.0.0-rc0-279-gc71853a;module load python/2.7'
+        module = 'module load vcflib/v1.0.0-rc0-279-gc71853a'
     shell:
-        '{params.module};vcfbreakmulti {input} | python scripts/MinimalRepVcf.py - {output}'
+        '{params.module};vcfbreakmulti {input} > {output}'
+
+
+rule left_align_trim:
+    input:
+        'split_multiallelic_vcf_chunks/{chunk}.vcf'
+    output:
+        'left_align_trim/{chunk}.vcf'
+    params:
+        module = 'module load GATK/3.8-0',
+        ref = config['REF']
+    shell:
+        '{params.module};GATK -m 4g LeftAlignAndTrimVariants -R {params.ref} --variant {input} -o {output}'
 
 rule sort_min_rep_vcf:
     input:
-        'split_multiallelic_vcf_chunks/{chunk}.vcf'
+        'left_align_trim/{chunk}.vcf'
     output:
         'sorted_min_rep_vcf_chunks/{chunk}.vcf'
     params:

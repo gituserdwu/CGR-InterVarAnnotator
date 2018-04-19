@@ -1,3 +1,4 @@
 vcf: /data/karlinser/OsteoExome/build_Osteosarcoma_2017_18794/variants_annotated.vcf.gz
 size: files/hg19.chrom.sizes
 chunk: 5000000
+REF: /fdb/GATK_resource_bundle/hg19-2.8/ucsc.hg19.fasta
