@@ -68,7 +68,7 @@ rule rename_info:
                 out.write('\t'.join(line_list[:8]) + '\n')
                 if alt == '.':
                     end = str(int(pos) + len(ref) - 1)
-                    avOut.write('\t'.join([chrom, pos, end, ref, '-'] + line_list[:8]) + '\n')
+                    avOut.write('\t'.join([chrom, pos, end, ref, ref] + line_list[:8]) + '\n')
                 line = f.readline()
 
 
