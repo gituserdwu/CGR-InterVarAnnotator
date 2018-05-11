@@ -38,10 +38,13 @@ for chrom in CHROMOSOMES:
         print('Chromsome ' + chrom + ' not in size file.')
         sys.exit(1)
     chromEnd = chromEndDict[chrom]
-    for i in range(0, chromEnd, chunk_size):
-        start = str(i)
-        end = str(i + chunk_size)
-        CHUNKS.append('.'.join([chrom, start, end]))
+    if config['small_vcf'] != 'NO':
+        CHUNKS.append('.'.join([chrom, '0', str(chromEnd)]))
+    else:
+        for i in range(0, chromEnd, chunk_size):
+            start = str(i)
+            end = str(i + chunk_size)
+            CHUNKS.append('.'.join([chrom, start, end]))
 
 
 include: 'modules/Snakefile_splitVcf'
