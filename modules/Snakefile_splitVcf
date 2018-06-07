@@ -42,7 +42,7 @@ rule sort_min_rep_vcf:
     params:
         module = 'module load IGVTools/2.3.98'
     shell:
-        '{params.module};java -Xmx9g -Djava.awt.headless=true -jar $IGVTOOLSHOME/igvtools.jar sort -m 100000 -t $TMPDIR {input} {output}'
+        '{params.module};java -Xmx9g -Djava.awt.headless=true -jar $IGVTOOLS_JAR sort -m 100000 -t $TMPDIR {input} {output}'
 
 
 rule rename_info:
