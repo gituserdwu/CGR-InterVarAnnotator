@@ -8,7 +8,7 @@
 
 *Clone the repo in the directory where you want the output. Preferablly a clean directory with nothing else in it.*
 
-**On Biowulf:**
+**On Helix or Biowulf:**
 
 ```sh
 cd /data/username/desired/output/directory
