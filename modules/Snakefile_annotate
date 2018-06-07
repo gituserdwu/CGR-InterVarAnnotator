@@ -40,7 +40,7 @@ rule bgzip_annotated_vcf:
     output:
         'variants_InterVar_annotated.vcf.gz'
     params:
-        module = 'module load tabix/0.2.6'
+        module = 'module load samtools/1.8'
     shell:
         '{params.module};bgzip {input}'
 
@@ -50,7 +50,7 @@ rule tabix_annotated_vcf:
     output:
         'variants_InterVar_annotated.vcf.gz.tbi'
     params:
-        module = 'module load tabix/0.2.6'
+        module = 'module load samtools/1.8'
     shell:
         '{params.module};tabix -p vcf {input}'
 
