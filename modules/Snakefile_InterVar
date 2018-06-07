@@ -39,7 +39,7 @@ rule bgzip_bed:
     output:
         'InterVar_bed/build.intervar.bed.gz'
     params:
-        module = 'module load tabix/0.2.6'
+        module = 'module load samtools/1.8'
     shell:
         '{params.module};bgzip {input}'
 
@@ -50,7 +50,7 @@ rule tabix_bed:
     output:
         'InterVar_bed/build.intervar.bed.gz.tbi'
     params:
-        module = 'module load tabix/0.2.6'
+        module = 'module load samtools/1.8'
     shell:
         '{params.module};tabix -p bed -S 1 {input}'
 
