@@ -18,7 +18,7 @@ rule split_multiallelic:
     output:
         'split_multiallelic_vcf_chunks/{chunk}.vcf'
     params:
-        module = 'module load vcflib/v1.0.0-rc0-279-gc71853a'
+        module = 'module load vcflib/v1.0.0-rc0-331-g7e3d806'
     shell:
         '{params.module};vcfbreakmulti {input} > {output}'
 
