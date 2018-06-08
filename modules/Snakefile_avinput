@@ -7,9 +7,10 @@ rule make_avinput:
     output:
         'avinput/{chunk}.avinput'
     params:
-        script = 'perl /usr/local/apps/ANNOVAR/2017-07-16/convert2annovar.pl'
+        module = 'module load annovar/2018-04-16'
+        script = 'convert2annovar.pl'
     run:
-        shell('{params.script} --format vcf4old --includeinfo {input.vcf} --outfile {output}')
+        shell('{params.module};{params.script} --format vcf4old --includeinfo {input.vcf} --outfile {output}')
         with open(input.av) as f, open(output[0], 'a') as out:
             a = f.read()
             out.write(a)
