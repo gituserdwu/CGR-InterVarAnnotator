@@ -7,7 +7,7 @@ rule run_intervar:
         'InterVar_chunks/{chunk}.InterVarOutput.hg19_multianno.txt.intervar'
     params:
         out = 'InterVar_chunks/{chunk}.InterVarOutput',
-        module = 'module load python/2.7;module load InterVar/2.0'
+        module = 'module load python/2.7;module load InterVar/2.0;module load annovar/2018-04-16'
     shell:
         '{params.module};InterVar -i {input} -d $ANNOVAR_DATA/hg19 -o {params.out}'
 
