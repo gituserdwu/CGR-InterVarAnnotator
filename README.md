@@ -17,7 +17,7 @@ git clone https://github.com/ekarlins/InterVarAnnotator.git
 cd InterVarAnnotator
 ```
 
-*Edit "config.yaml" to give the path to your input vcf.gz (at the very least).  The pipeline defaults to assuming that the VCF is the result of variant calling from WES or WGS and is quite large.  If your VCF contains a small number of variants you can edit the "small_vcf" field in "config.yaml" to "YES".  This will run one chromosome at a time instead of the default of 5MB chunks and will result in many fewer jobs being submitted.  This should work well if your chromsome with the most variants contains fewer than 50,000 variants.*
+*Edit "config.yaml" to give the path to your input vcf.gz (at the very least). The chromosome names in your VCF must match the names in the "size" file in "config.yaml".  Use one of the files provided in "files/" or your own file if the ones provided are not adequate.  The pipeline defaults to assuming that the VCF is the result of variant calling from WES or WGS and is quite large.  If your VCF contains a small number of variants you can edit the "small_vcf" field in "config.yaml" to "YES".  This will run one chromosome at a time instead of the default of 5MB chunks and will result in many fewer jobs being submitted.  This should work well if your chromsome with the most variants contains fewer than 50,000 variants.*
 
 **On Biowulf:**
 
