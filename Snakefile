@@ -32,8 +32,6 @@ with open(size_file) as f:
 
 CHUNKS = []
 for chrom in CHROMOSOMES:
-    if not chrom.startswith('chr'):
-        chrom = 'chr' + chrom
     if not chromEndDict.get(chrom):
         print('Chromsome ' + chrom + ' not in size file.')
         sys.exit(1)
