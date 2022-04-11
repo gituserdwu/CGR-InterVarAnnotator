@@ -11,9 +11,9 @@
 **On Helix or Biowulf:**
 
 ```sh
-cd /data/username/desired/output/directory
+cd ./desired_directory
 module load git
-git clone https://github.com/ekarlins/InterVarAnnotator.git
+git clone https://github.com/gituserdwu/CGR-InterVarAnnotator.git
 cd InterVarAnnotator
 ```
 
@@ -22,7 +22,7 @@ cd InterVarAnnotator
 **On Biowulf:**
 
 ```sh
-cd /data/username/desired/output/directory/InterVarAnnotator
+cd ./desired_directory/InterVarAnnotator
 sbatch --mail-type=BEGIN,TIME_LIMIT_90,END --cpus-per-task=2 --mem=2g --partition=norm --time=24:00:00 mainSnake.sh
 ```
 
